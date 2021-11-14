@@ -1,11 +1,8 @@
 {
-  "name": "express-study",
-  "version": "1.0.0",
-  "description": "node express study",
-  "main": "index.js",
-  "scripts": {
-    "test": "test"
-  },
-  "author": "Kim Ji Eun",
-  "license": "ISC"
+  "name": "side-project-v1",
+  "packageManager": "yarn@3.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
 }
