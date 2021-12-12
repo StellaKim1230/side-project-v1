@@ -5,7 +5,13 @@
   "workspaces": [
     "packages/*"
   ],
+  "resolutions": {
+    "typescript": "4.4.4"
+  },
   "scripts": {
     "server:dev": "yarn workspace server dev"
+  },
+  "devDependencies": {
+    "typescript": "4.4.4"
   }
 }
