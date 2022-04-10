@@ -1,14 +1,28 @@
 import Fastify from "fastify";
-const fastify = Fastify({
-  logger: true,
-});
+import mercurius from "mercurius";
 
-fastify.get("/", (request, reply) => {
-  reply.send({ hello: "world" });
-});
+const app = Fastify();
 
-fastify.listen(3000, (err, address) => {
-  if (err) {
-    fastify.log.error(err);
+const schema = `
+  type Query {
+    add(x: Int, y: Int): Int
   }
+`;
+
+const resolvers = {
+  Query: {
+    add: async (_: any, { x, y }: { x: any; y: any }) => x + y,
+  },
+};
+
+app.register(mercurius, {
+  schema,
+  resolvers,
 });
+
+app.get("/", async function (req: any, reply: any) {
+  const query = "{ add(x: 2, y: 2) }";
+  return reply.graphql(query);
+});
+
+app.listen(4000);
