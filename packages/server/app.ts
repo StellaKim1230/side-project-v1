@@ -1,11 +1,14 @@
-import express from "express";
-const app = express();
-const port = 3000;
-
-app.get("/", (req, res) => {
-  res.send("Hello Worild");
+import Fastify from "fastify";
+const fastify = Fastify({
+  logger: true,
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost: ${port}`);
+fastify.get("/", (request, reply) => {
+  reply.send({ hello: "world" });
+});
+
+fastify.listen(3000, (err, address) => {
+  if (err) {
+    fastify.log.error(err);
+  }
 });
