@@ -1,28 +1,43 @@
-import Fastify from "fastify";
-import mercurius from "mercurius";
+import { ApolloServer } from "apollo-server-fastify";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import { ApolloServerPlugin } from "apollo-server-plugin-base";
+import fastify, { FastifyInstance } from "fastify";
+import { loadFilesSync } from "@graphql-tools/load-files";
+import { mergeTypeDefs } from "@graphql-tools/merge";
 
-const app = Fastify();
+import resolvers from "./graphql/resolvers";
 
-const schema = `
-  type Query {
-    add(x: Int, y: Int): Int
-  }
-`;
+const loadedFiles = loadFilesSync(`${__dirname}/graphql/schema/*.graphql`);
+const typeDefs = mergeTypeDefs(loadedFiles);
 
-const resolvers = {
-  Query: {
-    add: async (_: any, { x, y }: { x: any; y: any }) => x + y,
-  },
+const fastifyAppClosePlugin = (app: FastifyInstance): ApolloServerPlugin => {
+  return {
+    async serverWillStart() {
+      return {
+        async drainServer() {
+          await app.close();
+        },
+      };
+    },
+  };
 };
 
-app.register(mercurius, {
-  schema,
-  resolvers,
-});
+const startApolloServer = async (typeDefs: any, resolvers: any) => {
+  const app = fastify();
 
-app.get("/", async function (req: any, reply: any) {
-  const query = "{ add(x: 2, y: 2) }";
-  return reply.graphql(query);
-});
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [
+      fastifyAppClosePlugin(app),
+      ApolloServerPluginDrainHttpServer({ httpServer: app.server }),
+    ],
+  });
 
-app.listen(4000);
+  await server.start();
+  app.register(server.createHandler());
+  await app.listen(4000);
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+};
+
+startApolloServer(typeDefs, resolvers);
