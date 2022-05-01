@@ -3,7 +3,8 @@
   "packageManager": "yarn@3.1.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/!graphql"
   ],
   "resolutions": {
     "typescript": "4.4.4"
