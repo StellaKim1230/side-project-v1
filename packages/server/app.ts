@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import { ApolloServer } from "apollo-server-fastify";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { ApolloServerPlugin } from "apollo-server-plugin-base";
@@ -7,7 +8,10 @@ import { mergeTypeDefs } from "@graphql-tools/merge";
 
 import resolvers from "./graphql/resolvers";
 
-const loadedFiles = loadFilesSync(`${__dirname}/graphql/schema/*.graphql`);
+const loadedFiles = loadFilesSync(
+  resolve(__dirname, `../graphql/schema/*.graphql`)
+);
+
 const typeDefs = mergeTypeDefs(loadedFiles);
 
 const fastifyAppClosePlugin = (app: FastifyInstance): ApolloServerPlugin => {
