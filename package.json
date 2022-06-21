@@ -10,6 +10,7 @@
   },
   "scripts": {
     "server:dev": "yarn workspace server dev",
+    "app:dev": "yarn workspace app dev",
     "graphql:codegen": "graphql codegen",
     "graphql:coverage": "graphql coverage",
     "graphql:validate": "graphql validate",
