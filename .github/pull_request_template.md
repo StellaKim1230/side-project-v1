@@ -1,11 +1,11 @@
-## 🧑‍💻 PR 내용
+## PR contents
 
-수정/추가한 내용을 적어주세요.
+Please write any corrections or additions.
 
 ## Issue number and link
 
-이슈 번호를 연결해주세요.
+Please link the issue number.
 
-## 📸 스크린샷
+## 📸 Screen shot
 
-스크린샷을 첨부해주세요.
+Please attach a screenshot.
